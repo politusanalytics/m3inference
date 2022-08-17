@@ -148,7 +148,7 @@ class M3Inference:
         for raw_data, pred in zip(data, y_pred):
             _id = raw_data['id']
             if _id in pred_joined:
-                logger.warning(f'ID {_id} already exists. Please double-check the input data. Skipping for now...')
+                # logger.warning(f'ID {_id} already exists. Please double-check the input data. Skipping for now...')
                 continue
             nested_pred = {}
             for (pred_cat, pred_types), pred_per_cat in zip(PRED_CATS.items(), pred):
