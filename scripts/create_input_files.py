@@ -3,23 +3,22 @@ import re
 import json
 import os.path
 import logging
-from m3inference.preprocess import resize_imgs, update_json
 import gzip
 
 # logger = logging.getLogger()
 # logger.setLevel(logging.DEBUG)
 
 if __name__ == "__main__":
-    json_file_or_database = sys.argv[1] # can be a json file or "database"
+    json_file = sys.argv[1] # gzipped
     resized_img_dir = sys.argv[2]
     output_dir = sys.argv[3]
+
+    file_without_images = open(output_dir + "/input_without_images.json", "w", encoding="utf-8")
+    file_with_images = open(output_dir + "/input_with_images.json", "w", encoding="utf-8")
 
     # with open(json_file, "r", encoding="utf-8") as f:
     with gzip.open(json_file, "rt", encoding="utf-8") as f:
         data = [json.loads(line) for line in f]
-
-    file_without_images = open(output_dir + "/input_without_images.json", "w", encoding="utf-8")
-    file_with_images = open(output_dir + "/input_with_images.json", "w", encoding="utf-8")
 
     for d in data:
         img_path = resized_img_dir + "/" + d["id_str"] + ".jpeg"

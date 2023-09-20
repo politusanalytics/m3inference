@@ -34,7 +34,7 @@ def run_model_and_write(input_data, use_full_model):
             out_d = {"demog_pred_full": {}, "demog_pred_txt": p}
 
         # write to database
-        user_col.update_one({"_id": k}, {"$set": out_d})
+        user_col.update_one({"_id": k}, {"$set": out_d, "$unset": {"to_be_pp_processed": ""}})
         # out_file.write(json.dumps({k: out_d}) + "\n")
 
     write_end = time()
@@ -46,10 +46,8 @@ def run_model_and_write(input_data, use_full_model):
 
 
 if __name__ == "__main__":
-    start_date = "2022-09-01"
-    result = user_col.find({"tweets": {"$elemMatch": {"date": {"$gte": dateutil.parser.parse(start_date)}}},
-                            "$and": [{"demog_pred_full": None}, {"demog_pred_txt": None}], "pp": {"$ne": None}},
-                           ["name", "screen_name", "description"])
+    result = user_col.find({"to_be_pp_processed": True}, ["name", "screen_name", "description"])
+
     full_model_in_data = []
     only_text_model_in_data = []
     for res_idx, row in enumerate(result):
@@ -64,9 +62,9 @@ if __name__ == "__main__":
         else:
             only_text_model_in_data.append(row)
 
-    print(len(full_model_in_data))
-    print(len(only_text_model_in_data))
-    print(res_idx)
+    print(f"Full data size: {len(full_model_in_data)}")
+    print(f"Text only data size: {len(only_text_model_in_data)}")
+    print(f"Total data size: {res_idx}")
 
     # full model
     if len(full_model_in_data) > 0:
