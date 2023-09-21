@@ -1,3 +1,9 @@
+# Our how to run
+`bash database_run.sh` for internal database (mongodb) \
+`bash run.sh` for a json input file
+
+# below is the original README
+
 # M3-Inference
 This is a PyTorch implementation of the M3 (Multimodal, Multilingual, and Multi-attribute) system described in the WebConf (WWW) 2019 paper [Demographic Inference and Representative Population Estimates from Multilingual Social Media Data](https://doi.org/10.1145/3308558.3313684).
 
